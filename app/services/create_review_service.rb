@@ -6,6 +6,10 @@ class CreateReviewService
   end
 
   def perform
+    if Game.find(params[:game_id]).empty?
+      return Result.new(success?: false, errors: ['Game not found'])
+    end
+
     review = Review.create!(params)
 
     Result.new(success?: true, review:)
