@@ -19,14 +19,17 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
-class Review < ApplicationRecord
-  validates :rating, :game_id, presence: true
+require 'rails_helper'
 
-  scope :top_reviews, lambda {
-                        includes(:user).order(
-                          like_count: :desc
-                        )
-                      }
+RSpec.describe Review, type: :model do
+  subject { create(:review) }
 
-  belongs_to :user
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:rating) }
+    it { is_expected.to validate_presence_of(:game_id) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:user) }
+  end
 end
