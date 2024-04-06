@@ -4,7 +4,7 @@ class CreateUserWhishlists < ActiveRecord::Migration[7.1]
   def change
     create_table :user_whishlists do |t|
       t.references :user, null: false, foreign_key: true
-      t.integer :game_id
+      t.references :game, null: false, foreign_key: true
 
       t.timestamps
     end

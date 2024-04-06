@@ -14,13 +14,12 @@
 #
 #  index_games_on_id  (id) UNIQUE
 #
-class Game < ApplicationRecord
-  validates :id, presence: true
-  validates :name, presence: true
-
-  has_many :user_whishlists, dependent: :destroy
-  has_many :users, through: :user_whishlists
-
-  has_many :reviews, dependent: :destroy
-  has_many :reviewers, through: :reviews, source: :user
+FactoryBot.define do
+  factory :game do
+    id { FFaker::Random.rand(1..100) }
+    name { FFaker::Name.name }
+    total_rating { '9.99' }
+    image_url { FFaker::Image.url }
+    summary { FFaker::Lorem.paragraph }
+  end
 end

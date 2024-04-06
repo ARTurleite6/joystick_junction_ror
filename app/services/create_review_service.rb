@@ -8,7 +8,8 @@ class CreateReviewService
   end
 
   def perform
-    return Result.new(success?: false, errors: ['Game not found']) if Game.find(params[:game_id]).nil?
+    result = GameApi.find(params[:game_id])
+    return Result.new(success?: false, errors: ['Game not found']) unless result.success?
 
     review = Review.create!(params)
 

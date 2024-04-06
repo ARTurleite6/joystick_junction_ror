@@ -9,12 +9,14 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 
-100.times do
+games = GameApi.all((1..400).to_a)
+
+games.each do |game|
   user = User.find_or_create_by!(first_name: FFaker::Name.first_name, last_name: FFaker::Name.last_name,
                                  username: FFaker::Internet.user_name)
 
   Review.find_or_create_by!(description: FFaker::Lorem.paragraph, rating: rand(1..5), user_id: user.id,
-                                     like_count: rand(1..100), game_id: rand(1..1000))
+                            like_count: rand(1..100), game:)
 
   UserWhishlist.find_or_create_by!(user_id: user.id, game_id: rand(1..1000))
 end

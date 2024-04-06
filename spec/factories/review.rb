@@ -7,5 +7,6 @@ FactoryBot.define do
     like_count { rand(1..10) }
     game_id { rand(1..10) }
     user
+    game
   end
 end
