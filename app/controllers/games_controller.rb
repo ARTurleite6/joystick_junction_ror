@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class GamesController < ApplicationController
-  def index; end
+  def index
+    @games = Game.random
+
+    render json: { games: @games }, status: :ok
+  end
 
   def show
     @game = Game.find(params[:id])

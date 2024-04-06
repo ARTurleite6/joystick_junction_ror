@@ -9,14 +9,6 @@ class Game
 
   def initialize(attributes)
     attributes.each do |attribute_name, attribute_value|
-      ##### Method one #####
-      # Works just great, but uses something scary like eval
-      # self.class.class_eval {attr_accessor attribute_name}
-      # self.instance_variable_set("@#{attribute_name}", attribute_value)
-
-      ##### Method two #####
-      # Manually creates methods for both getter and setter and then
-      # sends a message to the new setter with the attribute_value
       self.class.send(:define_method, "#{attribute_name}=".to_sym) do |value|
         instance_variable_set("@#{attribute_name}", value)
       end
@@ -35,7 +27,7 @@ class Game
     headers =
       { 'client-id' => Rails.application.credentials.igdb.client_id,
         'authorization' => "Bearer #{token}" }
-    params = "fields id, name, rating, summary; where id = #{id}; limit 1;"
+    params = "fields id, name, rating, summary, cover.url; where id = #{id}; limit 1;"
 
     response = Faraday.post API_ENDPOINT, params, headers
     parsed = JSON.parse response.body
@@ -44,15 +36,23 @@ class Game
     Game.new(parsed[0])
   end
 
+  def self.random(limit: 12)
+    response = Faraday.post "#{API_ENDPOINT}/count", '', headers
+    count = JSON.parse(response.body)['count']
+
+    random_numbers = []
+    while random_numbers.length < limit
+      random_number = rand(1..count)
+      random_numbers << random_number unless random_numbers.include?(random_number)
+    end
+
+    all(where: "id = (#{random_numbers.join(',')})")
+  end
+
   # it really is only 500
   def self.all(where: '')
     where = "where #{where};" unless where.empty?
-    token = FetchToken.perform
-
-    headers =
-      { 'client-id' => Rails.application.credentials.igdb.client_id,
-        'authorization' => "Bearer #{token}" }
-    params = "fields id, name, rating, summary;#{where}"
+    params = "fields id, name, rating, summary, cover.url;#{where}"
 
     response = Faraday.post API_ENDPOINT, params, headers
     parsed = JSON.parse response.body
@@ -62,7 +62,7 @@ class Game
   end
 
   def self.top_games(limit = 10)
-    params = "fields id, name, rating, summary; limit #{limit}; sort rating desc;"
+    params = "fields id, name, rating, summary, cover.url; limit #{limit}; sort rating desc;"
     response = Faraday.post API_ENDPOINT, params, headers
 
     parsed = JSON.parse response.body
