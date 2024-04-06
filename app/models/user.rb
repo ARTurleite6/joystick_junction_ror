@@ -15,4 +15,8 @@ class User < ApplicationRecord
   has_many :friends, class_name: 'Friendship'
   has_many :reviews, dependent: :destroy
   has_many :wishlists, dependent: :destroy
+
+  def number_of_friends
+    friends.count
+  end
 end

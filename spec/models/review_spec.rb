@@ -19,17 +19,17 @@
 #
 #  fk_rails_...  (user_id => users.id)
 #
+require 'rails_helper'
 
-one:
-  description: MyText
-  rating: 1
-  user: one
-  game_id: 1
-  like_count: 1
+RSpec.describe Review, type: :model do
+  subject { create(:review) }
 
-two:
-  description: MyText
-  rating: 1
-  user: two
-  game_id: 1
-  like_count: 1
+  describe 'validations' do
+    it { is_expected.to validate_presence_of(:rating) }
+    it { is_expected.to validate_presence_of(:game_id) }
+  end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:user) }
+  end
+end

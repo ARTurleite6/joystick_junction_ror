@@ -20,5 +20,13 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Review < ApplicationRecord
+  validates :rating, :game_id, presence: true
+
+  scope :top_reviews, lambda {
+                        includes(:user).order(
+                          like_count: :desc
+                        )
+                      }
+
   belongs_to :user
 end
