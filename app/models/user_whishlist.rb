@@ -18,5 +18,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class UserWhishlist < ApplicationRecord
+  validates :game_id, presence: true
   belongs_to :user
 end
