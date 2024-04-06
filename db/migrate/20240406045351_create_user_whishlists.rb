@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUserWhishlists < ActiveRecord::Migration[7.1]
   def change
     create_table :user_whishlists do |t|
@@ -7,6 +9,6 @@ class CreateUserWhishlists < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
-    add_index :user_whishlists, [:game_id, :user_id], unique: true
+    add_index :user_whishlists, %i[game_id user_id], unique: true
   end
 end

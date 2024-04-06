@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: reviews
@@ -22,11 +24,20 @@
 class Review < ApplicationRecord
   validates :rating, :game_id, presence: true
 
+  belongs_to :user
+
   scope :top_reviews, lambda {
                         includes(:user).order(
                           like_count: :desc
                         )
                       }
 
-  belongs_to :user
+  scope :trending_games, lambda {
+    where('created_at >= ?', 1.week.ago)
+      .group(:game_id)
+      .select('game_id, SUM(like_count) as total_likes')
+      .order('total_likes DESC')
+      .distinct(:game_id)
+      .limit(10)
+  }
 end

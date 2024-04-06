@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 class FetchToken
@@ -15,7 +17,7 @@ class FetchToken
     # Handle the response here
     if response.code == '200'
       # Successful request
-      token = JSON.parse(response.body)['access_token']
+      JSON.parse(response.body)['access_token']
 
     else
       # Error handling
@@ -23,4 +25,3 @@ class FetchToken
     end
   end
 end
-

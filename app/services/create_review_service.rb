@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateReviewService
   Result = Struct.new(:success?, :errors, :review, keyword_init: true)
 
@@ -6,9 +8,7 @@ class CreateReviewService
   end
 
   def perform
-    if Game.find(params[:game_id]).nil?
-      return Result.new(success?: false, errors: ['Game not found'])
-    end
+    return Result.new(success?: false, errors: ['Game not found']) if Game.find(params[:game_id]).nil?
 
     review = Review.create!(params)
 
