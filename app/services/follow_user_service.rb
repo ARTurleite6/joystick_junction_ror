@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FollowUserService
   Result = Struct.new(:success?, :errors, keyword_init: true)
 

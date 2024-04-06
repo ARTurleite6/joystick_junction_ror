@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -7,6 +9,10 @@ Rails.application.routes.draw do
 
   resources :reviews, only: %i[index create] do
     get :top, on: :collection
+  end
+
+  resources :games, only: %i[show] do
+    get :trending, on: :collection
   end
 
   resources :users do

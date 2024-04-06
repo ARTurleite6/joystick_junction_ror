@@ -35,3 +35,7 @@ application.yml
 /config/master.key
 
 credentials.yml copy.enc
+
+/config/credentials/development.key
+
+/config/credentials/test.key

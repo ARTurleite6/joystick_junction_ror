@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.2.2'
@@ -55,6 +57,8 @@ group :development do
   # gem "spring"
 end
 
-gem "ruby-apicalypse", "~> 0.1.0"
+gem 'ruby-apicalypse', '~> 0.1.0'
 
-gem "faraday", "~> 2.9"
+gem 'faraday', '~> 2.9'
+
+gem "rack-cors", "~> 2.0"

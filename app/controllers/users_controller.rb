@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   def follow
     result = FollowUserService.new(follow_params).perform
