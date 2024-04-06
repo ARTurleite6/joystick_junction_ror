@@ -6,23 +6,34 @@ require 'faraday'
 
 class GameApi
   API_ENDPOINT = 'https://api.igdb.com/v4/games'
+  PARAMS = 'fields id, name, total_rating, summary, cover.url;'
 
   def self.find(id)
-    db_game = Game.find_by(id: id)
+    db_game = Game.find_by(id:)
     return db_game unless db_game.nil?
 
-    token = FetchToken.perform
-
-    headers =
-      { 'client-id' => Rails.application.credentials.igdb.client_id,
-        'authorization' => "Bearer #{token}" }
-    params = "fields id, name, total_rating, summary, cover.url; where id = #{id}; limit 1;"
+    params = "#{PARAMS} where id = #{id}; limit 1;"
 
     response = Faraday.post API_ENDPOINT, params, headers
     parsed = JSON.parse response.body
     return nil if parsed.empty?
 
     StoreGameService.new(parsed[0]).perform
+  end
+
+  def self.search(name)
+    game = Game.find_by(name:)
+
+    return game unless game.nil?
+
+    response = Faraday.post API_ENDPOINT, "#{PARAMS} search \"#{name}\"; limit 1;",
+                            headers
+
+    response_json = JSON.parse(response.body)
+
+    return nil if response_json.empty?
+
+    StoreGameService.new(response_json[0]).perform
   end
 
   def self.random(limit: 12)
@@ -44,7 +55,7 @@ class GameApi
     ids -= db_games.map(&:id)
 
     where = "where id = (#{ids.join(',')});"
-    params = "fields id, name, total_rating, summary, cover.url;#{where}"
+    params = "#{PARAMS}#{where}"
 
     response = Faraday.post API_ENDPOINT, params, headers
     response = JSON.parse response.body
@@ -52,7 +63,7 @@ class GameApi
   end
 
   def self.top_games(limit = 10)
-    params = "fields id, name, total_rating, summary, cover.url; limit #{limit}; sort total_rating desc;"
+    params = "#{PARAMS} limit #{limit}; sort total_rating desc;"
     response = Faraday.post API_ENDPOINT, params, headers
 
     JSON.parse response.body

@@ -7,6 +7,16 @@ class GamesController < ApplicationController
     render json: { games: @games }, status: :ok
   end
 
+  def search
+    result = GameApi.search(params[:name])
+
+    if result.success?
+      format json: { game: result.game }, status: :ok
+    else
+      format json: { errors: result.errors }, status: :not_found
+    end
+  end
+
   def show
     result = GameApi.find(params[:id])
 
