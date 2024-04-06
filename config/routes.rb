@@ -11,11 +11,12 @@ Rails.application.routes.draw do
     get :top, on: :collection
   end
 
-  resources :games, only: %i[show] do
+  resources :games, only: %i[index show] do
     get :trending, on: :collection
   end
 
   resources :users do
+    get :reviews, on: :member 
     post :follow, on: :member
   end
 

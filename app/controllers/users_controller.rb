@@ -11,6 +11,11 @@ class UsersController < ApplicationController
     end
   end
 
+  def reviews
+    @reviews = Review.where(user_id: params[:id])
+    render json: { reviews: @reviews }, status: :ok
+  end
+
   private
 
   def follow_params
