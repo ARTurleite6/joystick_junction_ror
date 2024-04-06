@@ -1,6 +1,7 @@
 class ReviewsController < ApplicationController
   def index
-    @reviews = Review.where(user_id: params[:user_id])
+    @reviews = Review.all
+    
   end
 
   def top

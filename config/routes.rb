@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   resources :users do
+    get :reviews, on: :member 
     post :follow, on: :member
   end
 
