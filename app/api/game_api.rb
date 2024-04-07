@@ -58,7 +58,7 @@ class GameApi
 
     return db_games if ids.empty?
 
-    where = "where id = (#{ids.join(',')}) & cover != n & total_rating =! n;" # filtra dos 12 para ir só os que têm cover e total_ratings
+    where = "where id = (#{ids.join(',')}) & cover != n & total_rating != n;" # filtra dos 12 para ir só os que têm cover e total_ratings
     params = "#{PARAMS}#{where}"
     response = Faraday.post API_ENDPOINT, params, headers
     response = JSON.parse response.body
