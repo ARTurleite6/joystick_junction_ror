@@ -14,8 +14,9 @@ class StoreGamesService
       end
     end
 
-    @api_games.each do |api_game|
+    @api_games.map do |api_game|
       Game.upsert(api_game)
+      Game.find(api_game['id'])
     end
   end
 end

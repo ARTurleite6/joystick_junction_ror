@@ -6,7 +6,7 @@ require 'faraday'
 
 class GameApi
   API_ENDPOINT = 'https://api.igdb.com/v4/games'
-  PARAMS = 'fields id, name, total_rating, summary, cover.url;'
+  PARAMS = 'fields id, name, total_rating, summary, cover.url;where category = 0;'
 
   def self.find(id)
     db_game = Game.find_by(id:)
@@ -16,7 +16,7 @@ class GameApi
 
     response = Faraday.post API_ENDPOINT, params, headers
     parsed = JSON.parse response.body
-    return nil if parsed.empty?
+    return StoreGameService::Result.new(success?: false, errors: 'No Game was found') if parsed.empty?
 
     StoreGameService.new(parsed[0]).perform
   end
@@ -24,14 +24,14 @@ class GameApi
   def self.search(name)
     game = Game.find_by(name:)
 
-    return game unless game.nil?
+    return StoreGameService::Result.new(success?: true, game:) unless game.nil?
 
     response = Faraday.post API_ENDPOINT, "#{PARAMS} search \"#{name}\"; limit 1;",
                             headers
 
     response_json = JSON.parse(response.body)
 
-    return nil if response_json.empty?
+    return StoreGameService::Result.new(success?: false, errors: 'No Game was found') if response_json.empty?
 
     StoreGameService.new(response_json[0]).perform
   end
@@ -43,11 +43,6 @@ class GameApi
     random_numbers = []
     while random_numbers.length < limit
       random_number = rand(1..count)
-      # game = GameApi.find(random_number).game
-      # while game['image_url'].nil? do   # timeouts
-      #   random_number = rand(1..count)
-      #   game = GameApi.find(random_number).game 
-      # end
       random_numbers << random_number unless random_numbers.include?(random_number)
     end
 

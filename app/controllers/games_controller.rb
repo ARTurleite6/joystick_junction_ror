@@ -11,9 +11,9 @@ class GamesController < ApplicationController
     result = GameApi.search(params[:name])
 
     if result.success?
-      format json: { game: result.game }, status: :ok
+      render json: { game: result.game }, status: :ok
     else
-      format json: { errors: result.errors }, status: :not_found
+      render json: { errors: result.errors }, status: :not_found
     end
   end
 
@@ -38,9 +38,8 @@ class GamesController < ApplicationController
   end
 
   def top
-    @games = GameApi.top_games()
+    @games = GameApi.top_games
 
     render json: { games: @games }, status: :ok
   end
-
 end
