@@ -10,7 +10,7 @@ class GameApi
 
   def self.find(id)
     db_game = Game.find_by(id:)
-    return db_game unless db_game.nil?
+    return StoreGameService::Result.new(success?: true, game: db_game) unless db_game.nil?
 
     params = "#{PARAMS} where id = #{id}; limit 1;"
 
@@ -70,7 +70,8 @@ class GameApi
     params = "#{PARAMS} limit #{limit}; sort total_rating desc;"
     response = Faraday.post API_ENDPOINT, params, headers
 
-    JSON.parse response.body
+    response = JSON.parse response.body
+    StoreGamesService.new(response).perform
   end
 
   class << self

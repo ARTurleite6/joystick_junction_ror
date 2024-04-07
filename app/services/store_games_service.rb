@@ -15,7 +15,7 @@ class StoreGamesService
     end
 
     @api_games.each do |api_game|
-      Game.create!(api_game)
+      Game.upsert(api_game)
     end
   end
 end

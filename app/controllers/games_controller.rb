@@ -38,8 +38,9 @@ class GamesController < ApplicationController
   end
 
   def top
-    @games = Game.order(total_rating: :desc)
+    @games = GameApi.top_games()
 
     render json: { games: @games }, status: :ok
   end
-  end
+
+end

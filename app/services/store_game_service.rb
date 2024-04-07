@@ -12,7 +12,7 @@ class StoreGameService
                  @api_game
                end
 
-    Game.create!(api_game)
+    Game.upsert(api_game)
 
     Result.new(success?: true, game: api_game)
   rescue ActiveRecord::RecordInvalid => e
