@@ -36,4 +36,10 @@ class GamesController < ApplicationController
 
     render json: { games: @games }, status: :ok
   end
-end
+
+  def top
+    @games = Game.order(total_rating: :desc)
+
+    render json: { games: @games }, status: :ok
+  end
+  end

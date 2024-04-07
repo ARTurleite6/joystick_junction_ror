@@ -6,9 +6,9 @@ class ReviewsController < ApplicationController
   end
 
   def top
-    @reviews = Review.includes(:user).order(
-      :like_count, :desc
-    )
+    @reviews = Review.includes(:user).order(like_count: :desc)
+
+    render json: { reviews: @reviews }, status: :ok
   end
 
   def create

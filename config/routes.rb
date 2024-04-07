@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :games, only: %i[index show] do
     get :trending, on: :collection
+    get :top, on: :collection
     get :search, on: :collection
   end
 
