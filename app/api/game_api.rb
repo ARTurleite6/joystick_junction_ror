@@ -36,13 +36,18 @@ class GameApi
     StoreGameService.new(response_json[0]).perform
   end
 
-  def self.random(limit: 12)
+  def self.random(limit: 12) # Temos de verificar aqui se os ids que são geradas são de jogos sem cover, beca custoso
     response = Faraday.post "#{API_ENDPOINT}/count", '', headers
     count = JSON.parse(response.body)['count']
 
     random_numbers = []
     while random_numbers.length < limit
       random_number = rand(1..count)
+      # game = GameApi.find(random_number).game
+      # while game['image_url'].nil? do   # timeouts
+      #   random_number = rand(1..count)
+      #   game = GameApi.find(random_number).game 
+      # end
       random_numbers << random_number unless random_numbers.include?(random_number)
     end
 
@@ -58,9 +63,8 @@ class GameApi
 
     return db_games if ids.empty?
 
-    where = "where id = (#{ids.join(',')});"
+    where = "where id = (#{ids.join(',')}) & cover != n & total_rating =! n;" # filtra dos 12 para ir só os que têm cover e total_ratings
     params = "#{PARAMS}#{where}"
-
     response = Faraday.post API_ENDPOINT, params, headers
     response = JSON.parse response.body
     StoreGamesService.new(response).perform
