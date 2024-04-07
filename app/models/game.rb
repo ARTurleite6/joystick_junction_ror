@@ -15,12 +15,14 @@
 #  index_games_on_id  (id) UNIQUE
 #
 class Game < ApplicationRecord
-  validates :id, presence: true
-  validates :name, presence: true
+  self.primary_key = "id"
 
   has_many :user_whishlists, dependent: :destroy
   has_many :users, through: :user_whishlists
 
   has_many :reviews, dependent: :destroy
   has_many :reviewers, through: :reviews, source: :user
+
+  validates :id, presence: true
+  validates :name, presence: true
 end

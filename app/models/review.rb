@@ -24,8 +24,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Review < ApplicationRecord
-  validates :rating, presence: true
-
   belongs_to :user
   belongs_to :game
 
@@ -50,4 +48,6 @@ class Review < ApplicationRecord
       .distinct(:game_id)
       .limit(10)
   }
+
+  validates :rating, presence: true
 end
