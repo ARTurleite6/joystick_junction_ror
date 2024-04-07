@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     get :search, on: :collection
   end
 
-  resources :users do
+  resources :users, only: %i[show] do
     get :reviews, on: :member
     post :follow, on: :member
   end

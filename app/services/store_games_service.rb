@@ -14,6 +14,8 @@ class StoreGamesService
       end
     end
 
-    Game.insert_all(@api_games)
+    @api_games.each do |api_game|
+      Game.create!(api_game)
+    end
   end
 end

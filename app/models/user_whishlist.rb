@@ -22,6 +22,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class UserWhishlist < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, inverse_of: :wishlists
   belongs_to :game
 end

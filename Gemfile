@@ -34,7 +34,7 @@ gem 'bootsnap', require: false
 gem 'figaro'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin Ajax possible
 # gem "rack-cors"
@@ -61,4 +61,6 @@ gem 'ruby-apicalypse', '~> 0.1.0'
 
 gem 'faraday', '~> 2.9'
 
-gem "rack-cors", "~> 2.0"
+gem 'rack-cors', '~> 2.0'
+
+gem "active_model_serializers", "~> 0.10.14"
