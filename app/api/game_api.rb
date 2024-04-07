@@ -51,8 +51,12 @@ class GameApi
 
   # it really is only 500
   def self.all(ids)
+    return [] if ids.empty?
+
     db_games = Game.where(id: ids)
     ids -= db_games.map(&:id)
+
+    return db_games if ids.empty?
 
     where = "where id = (#{ids.join(',')});"
     params = "#{PARAMS}#{where}"

@@ -30,7 +30,7 @@ class GamesController < ApplicationController
   end
 
   def trending
-    game_ids = Review.trending_games.includes(:game).map(&:id)
+    game_ids = Review.trending_games.includes(:game).map(&:game_id)
 
     @games = GameApi.all(game_ids)
 

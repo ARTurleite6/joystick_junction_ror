@@ -3,12 +3,11 @@
 class ReviewsController < ApplicationController
   def index
     @reviews = Review.all
-
   end
 
   def top
     @reviews = Review.includes(:user).order(
-      'like_count * 0.70 + (SELECT COUNT(*) FROM user_friends WHERE user_friends.friend_id = reviews.user_id) * 0.30', :desc
+      :like_count, :desc
     )
   end
 
